@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +55,8 @@ public class OrderService {
             newOrder = orderRepository.save(order.get()); // updated_date 를 업데이트 시키기 위함  // 테스트 필요
         }
         for(OrderItemInfo itemInfo : orderRequestDTO.orderItems()){
-            Optional<OrderItems> orderItems = orderItemRepository.findByOrders_OrderIdAndProducts_ProductId(newOrder.getOrderId(), itemInfo.productId());
-            Products products = productRepository.findById(itemInfo.productId()).orElseThrow(()-> new RuntimeException("해당 상품은 존재하지 않습니다."));
+            Optional<OrderItems> orderItems = orderItemRepository.findByOrders_OrderIdAndProducts_ProductId(newOrder.getOrderId(), Base64.getDecoder().decode(itemInfo.productId()));
+            Products products = productRepository.findById(Base64.getDecoder().decode(itemInfo.productId())).orElseThrow(()-> new RuntimeException("해당 상품은 존재하지 않습니다."));
             if(orderItems.isEmpty()) {
                 orderItemRepository.save(OrderItems.builder()
                         .products(products)

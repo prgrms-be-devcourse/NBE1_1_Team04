@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @SpringBootTest
@@ -53,7 +55,7 @@ class Nbe11Team04Mw1ApplicationTests {
 
 
 		//when
-		OrderRequestDTO dto = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(products1.getProductId(), 1)}));
+		OrderRequestDTO dto = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(Base64.getEncoder().encodeToString(products1.getProductId()), 1)}));
 		orderService.placeOrder(dto);
 
 		//then
@@ -74,7 +76,7 @@ class Nbe11Team04Mw1ApplicationTests {
 				.build()
 		);
 
-		OrderRequestDTO dto = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(products2.getProductId(), 1)}));
+		OrderRequestDTO dto = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(Base64.getEncoder().encodeToString(products2.getProductId()), 1)}));
 		orderService.placeOrder(dto);
 
 		System.out.println(orderRepository.findAll());
@@ -95,15 +97,23 @@ class Nbe11Team04Mw1ApplicationTests {
 
 
 		//when
-		OrderRequestDTO dto = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(products1.getProductId(), 1)}));
+		OrderRequestDTO dto = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(Base64.getEncoder().encodeToString(products1.getProductId()), 1)}));
 		orderService.placeOrder(dto);
 
-		OrderRequestDTO dto2 = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(products1.getProductId(), 2)}));
+		OrderRequestDTO dto2 = new OrderRequestDTO("a", "add", "1234", List.of(new OrderItemInfo[]{new OrderItemInfo(Base64.getEncoder().encodeToString(products1.getProductId()), 2)}));
 		orderService.placeOrder(dto2);
 
 		//then
 		System.out.println(orderRepository.findAll());
 		System.out.println(orderItemRepository.findAll());
+	}
+
+	@Test
+	void testd(){
+//		orderRepository.deleteByOrderId();
+		System.out.println(Arrays.toString(productRepository.findByProductName("coffee2").get().getProductId()));
+		System.out.println(uuidUtil.bytesToHex(productRepository.findByProductName("coffee2").get().getProductId()));
+		System.out.println(productRepository.findById(new byte[]{17, -17, 108, 58, 37, -81, -113, -123, -72, 34, -13, 117, -62, -100, -15, 117}));
 	}
 
 
