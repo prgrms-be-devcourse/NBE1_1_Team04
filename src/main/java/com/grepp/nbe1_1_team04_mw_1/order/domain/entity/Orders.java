@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,7 +22,7 @@ public class Orders extends BaseTimeEntity {
 
     @Id
     @Column(length = 16)
-    private Byte[] order_id;
+    private Byte[] orderId;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -33,21 +34,20 @@ public class Orders extends BaseTimeEntity {
     private String postcode;
 
     @Column(name = "order_status", nullable = false)
-    private String order_status;
+    private String orderStatus;
 
     @OneToMany(mappedBy = "orders", fetch = FetchType.LAZY)
     @Builder.Default
     private List<OrderItems> orderItems = new ArrayList<>();
 
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "order_id = " + getOrder_id() + ", " +
+                "orderId = " + Arrays.toString(getOrderId()) + ", " +
                 "email = " + getEmail() + ", " +
                 "address = " + getAddress() + ", " +
                 "postcode = " + getPostcode() + ", " +
-                "order_status = " + getOrder_status() + ", " +
+                "orderStatus = " + getOrderStatus() + ", " +
                 "createdDate = " + getCreatedDate() + ", " +
                 "modifiedDate = " + getModifiedDate() + ")";
     }

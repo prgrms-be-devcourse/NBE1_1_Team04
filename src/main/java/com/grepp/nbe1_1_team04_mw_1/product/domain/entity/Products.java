@@ -20,10 +20,10 @@ public class Products extends BaseTimeEntity {
 
     @Id
     @Column(length = 16)
-    private Byte[] product_id;
+    private Byte[] productId;
 
     @Column(name = "product_name", nullable = false)
-    private String product_name;
+    private String productName;
 
     @Column(name = "category", nullable = false)
     private String category;
@@ -41,8 +41,8 @@ public class Products extends BaseTimeEntity {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "product_id = " + getProduct_id() + ", " +
-                "product_name = " + getProduct_name() + ", " +
+                "productId = " + getProductId() + ", " +
+                "productName = " + getProductName() + ", " +
                 "category = " + getCategory() + ", " +
                 "price = " + getPrice() + ", " +
                 "description = " + getDescription() + ", " +

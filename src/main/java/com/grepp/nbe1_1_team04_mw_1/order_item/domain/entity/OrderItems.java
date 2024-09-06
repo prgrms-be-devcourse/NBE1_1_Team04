@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "order_items")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class OrderItems extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seq")
-    private int seq;
+    private Long seq;
 
     @Column(name = "category", nullable = false)
     private String category;
@@ -28,7 +29,7 @@ public class OrderItems extends BaseTimeEntity {
     private Long price;
 
     @Column(name = "quantity", nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
