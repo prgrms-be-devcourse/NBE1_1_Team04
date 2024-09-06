@@ -20,7 +20,7 @@ public class Products extends BaseTimeEntity {
 
     @Id
     @Column(length = 16)
-    private Byte[] productId;
+    private byte[] productId;
 
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -46,7 +46,7 @@ public class Products extends BaseTimeEntity {
                 "category = " + getCategory() + ", " +
                 "price = " + getPrice() + ", " +
                 "description = " + getDescription() + ", " +
-                "createdDate = " + getCreatedDate() + ", " +
-                "modifiedDate = " + getModifiedDate() + ")";
+                "createdAt = " + getCreatedAt() + ", " +
+                "updatedAt = " + getUpdatedAt() + ")";
     }
 }

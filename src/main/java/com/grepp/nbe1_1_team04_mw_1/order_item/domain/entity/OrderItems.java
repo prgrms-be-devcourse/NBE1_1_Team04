@@ -46,7 +46,12 @@ public class OrderItems extends BaseTimeEntity {
                 "category = " + getCategory() + ", " +
                 "price = " + getPrice() + ", " +
                 "quantity = " + getQuantity() + ", " +
-                "createdDate = " + getCreatedDate() + ", " +
-                "modifiedDate = " + getModifiedDate() + ")";
+                "createdAt = " + getCreatedAt() + ", " +
+                "updatedAt = " + getUpdatedAt() + ")";
+    }
+
+    public void updateQuantity(Integer quantity, Long price) {
+        this.quantity = quantity;
+        this.price = price;
     }
 }

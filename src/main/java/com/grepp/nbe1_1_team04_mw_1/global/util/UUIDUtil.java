@@ -7,10 +7,9 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 @Component
 public class UUIDUtil {
+    private final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
-    private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-
-    public static byte[] createUUID() {
+    public byte[] createUUID() {
         UUID uuidV1 = Generators.timeBasedGenerator().generate();
         String[] uuidV1Parts = uuidV1.toString().split("-");
         String sequentialUUID = uuidV1Parts[2]+uuidV1Parts[1]+uuidV1Parts[0]+uuidV1Parts[3]+uuidV1Parts[4];
@@ -23,7 +22,7 @@ public class UUIDUtil {
     }
 
     //사람이 식별 가능한 문자열로 변환
-    public static String bytesToHex(byte[] bytes) {
+    public String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++) {
             int v = bytes[i] & 0xFF;

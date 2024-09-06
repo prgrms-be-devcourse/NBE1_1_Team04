@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Orders, Long> {
-    Optional<Orders> findByOrderIdAndCreatedDate(byte[] orderId, LocalDateTime createdDate);
+public interface OrderRepository extends JpaRepository<Orders, byte[]> {
+    Optional<Orders> findTopByEmailAndCreatedAtAfter(String email, LocalDateTime createdDate);
 
     Optional<Orders> findByOrderId(byte[] orderId);
 

@@ -22,7 +22,7 @@ public class Orders extends BaseTimeEntity {
 
     @Id
     @Column(length = 16)
-    private Byte[] orderId;
+    private byte[] orderId;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -48,7 +48,7 @@ public class Orders extends BaseTimeEntity {
                 "address = " + getAddress() + ", " +
                 "postcode = " + getPostcode() + ", " +
                 "orderStatus = " + getOrderStatus() + ", " +
-                "createdDate = " + getCreatedDate() + ", " +
-                "modifiedDate = " + getModifiedDate() + ")";
+                "createdAt = " + getCreatedAt() + ", " +
+                "updatedAt = " + getUpdatedAt() + ")";
     }
 }
