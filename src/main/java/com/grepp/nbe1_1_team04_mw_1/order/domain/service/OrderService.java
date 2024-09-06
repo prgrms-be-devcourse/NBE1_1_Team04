@@ -9,6 +9,7 @@ import com.grepp.nbe1_1_team04_mw_1.order_item.domain.entity.OrderItems;
 import com.grepp.nbe1_1_team04_mw_1.order_item.domain.repository.OrderItemRepository;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.entity.Products;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.repository.ProductRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class OrderService {
     private final UUIDUtil uuidUtil;
 
     @Transactional
-    public ResponseEntity<String> placeOrder(OrderRequestDTO orderRequestDTO) {
+    public String placeOrder(OrderRequestDTO orderRequestDTO) {
         Optional<Orders> order = Optional.empty();
         Orders newOrder;
         if(!checkAfter2pm()){
@@ -71,10 +72,25 @@ public class OrderService {
                         (orderItems.get().getQuantity() + itemInfo.quantity())*products.getPrice());
             }
         }
-        return ResponseEntity.ok().body("Order Complete");
+        return "Order Complete";
     }
 
     public boolean checkAfter2pm(){
         return LocalDateTime.now().isAfter(LocalDateTime.now().with(LocalTime.of(14, 0)));
+    }
+
+    @Transactional
+    public String cancelOrder(String orderId) {
+        orderRepository.deleteByOrderId(Base64.getDecoder().decode(orderId));
+        return "Order Cancelled";
+    }
+
+    @Transactional
+    public Orders getOrder(String orderId) {
+        Optional<Orders> order = orderRepository.findById(Base64.getDecoder().decode(orderId));
+        if(order.isEmpty()) {
+            throw new RuntimeException("해당 주문은 존재하지 않습니다");
+        }
+        return order.get();
     }
 }
