@@ -1,6 +1,7 @@
 package com.grepp.nbe1_1_team04_mw_1.product.domain.service;
 
 import com.grepp.nbe1_1_team04_mw_1.global.util.UUIDUtil;
+import com.grepp.nbe1_1_team04_mw_1.order_item.domain.repository.OrderItemRepository;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.dto.request.ProductRequestDTO;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.entity.Products;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.repository.ProductRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final OrderItemRepository orderItemRepository;
     private final UUIDUtil uuidUtil;
 
     public Products getProducts(String productId) {
@@ -48,7 +50,9 @@ public class ProductService {
         return "update product success";
     }
 
+    @Transactional
     public String deleteProduct(String productId) {
+        orderItemRepository.deleteByProducts_ProductId(Base64.getDecoder().decode(productId));
         productRepository.deleteById(Base64.getDecoder().decode(productId));
         return "delete product success";
     }

@@ -2,9 +2,10 @@ package com.grepp.nbe1_1_team04_mw_1.order.domain.dto.response;
 
 
 import com.grepp.nbe1_1_team04_mw_1.order.domain.entity.Orders;
+import lombok.Getter;
 
 import java.util.Base64;
-
+@Getter
 public class OrderResponseDTO {
     private String orderId;
 

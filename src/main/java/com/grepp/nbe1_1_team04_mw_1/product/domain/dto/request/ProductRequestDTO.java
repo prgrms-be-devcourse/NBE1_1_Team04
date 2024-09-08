@@ -1,11 +1,15 @@
 package com.grepp.nbe1_1_team04_mw_1.product.domain.dto.request;
 
 import com.grepp.nbe1_1_team04_mw_1.product.domain.entity.Products;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.Base64;
-
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ProductRequestDTO {
-    private String productId;
 
     private String productName;
 
@@ -17,7 +21,6 @@ public class ProductRequestDTO {
 
     public Products toEntity() {
         return Products.builder()
-                .productId(Base64.getDecoder().decode(productId))
                 .productName(productName)
                 .category(category)
                 .price(price)

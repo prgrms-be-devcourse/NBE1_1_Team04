@@ -48,4 +48,8 @@ public class Orders extends BaseTimeEntity {
                 "createdAt = " + getCreatedAt() + ", " +
                 "updatedAt = " + getUpdatedAt() + ")";
     }
+
+    public void updateStatus(String status) {
+        this.orderStatus = status;
+    }
 }

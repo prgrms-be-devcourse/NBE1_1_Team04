@@ -45,7 +45,7 @@ public class OrderService {
         if(order.isEmpty()) {
             newOrder = Orders.builder()
                     .orderId(uuidUtil.createUUID())
-                    .orderStatus("ordered")
+                    .orderStatus("new")
                     .email(orderRequestDTO.email())
                     .address(orderRequestDTO.address())
                     .postcode(orderRequestDTO.postcode())
@@ -53,15 +53,21 @@ public class OrderService {
             orderRepository.save(newOrder);
         }
         else {
-            newOrder = orderRepository.save(order.get()); // updated_date 를 업데이트 시키기 위함  // 테스트 필요
+            order.get().updateStatus("updated");
+            newOrder = orderRepository.save(order.get());
         }
+        createOrderItem(orderRequestDTO, newOrder);
+        return "create order success";
+    }
+
+    public void createOrderItem(OrderRequestDTO orderRequestDTO, Orders order) {
         for(OrderItemInfo itemInfo : orderRequestDTO.orderItems()){
-            Optional<OrderItems> orderItems = orderItemRepository.findByOrders_OrderIdAndProducts_ProductId(newOrder.getOrderId(), Base64.getDecoder().decode(itemInfo.productId()));
-            Products products = productRepository.findById(Base64.getDecoder().decode(itemInfo.productId())).orElseThrow(()-> new RuntimeException("해당 상품은 존재하지 않습니다."));
+            Optional<OrderItems> orderItems = orderItemRepository.findByOrders_OrderIdAndProducts_ProductId(order.getOrderId(), Base64.getDecoder().decode(itemInfo.productId()));
+            Products products = productRepository.findById(Base64.getDecoder().decode(itemInfo.productId())).orElseThrow(()-> new RuntimeException("해당 상품은 존재하지 않습니다"));
             if(orderItems.isEmpty()) {
                 orderItemRepository.save(OrderItems.builder()
                         .products(products)
-                        .orders(newOrder)
+                        .orders(order)
                         .quantity(itemInfo.quantity())
                         .category("coffee")
                         .price(products.getPrice()*itemInfo.quantity())
@@ -72,7 +78,6 @@ public class OrderService {
                         (orderItems.get().getQuantity() + itemInfo.quantity())*products.getPrice());
             }
         }
-        return "Order Complete";
     }
 
     public boolean checkAfter2pm(){
@@ -81,6 +86,7 @@ public class OrderService {
 
     @Transactional
     public String cancelOrder(String orderId) {
+        orderItemRepository.deleteByOrders_OrderId(Base64.getDecoder().decode(orderId));
         orderRepository.deleteByOrderId(Base64.getDecoder().decode(orderId));
         return "Order Cancelled";
     }
@@ -92,5 +98,22 @@ public class OrderService {
             throw new RuntimeException("해당 주문은 존재하지 않습니다");
         }
         return order.get();
+    }
+
+    @Transactional
+    public String updateOrder(String orderId, OrderRequestDTO orderRequestDTO) {
+        Orders order = orderRequestDTO.toEntity();
+        Orders oldOrder = orderRepository.findById(Base64.getDecoder().decode(orderId)).orElseThrow(()-> new RuntimeException("해당 주문은 존재하지 않습니다"));
+        Orders newOrder = Orders.builder()
+                .orderId(oldOrder.getOrderId())
+                .email(order.getEmail()==null ? oldOrder.getEmail() : order.getEmail())
+                .postcode(order.getPostcode()==null ? oldOrder.getPostcode() : order.getPostcode())
+                .address(order.getAddress()==null ? oldOrder.getAddress() : order.getAddress())
+                .orderStatus("updated")
+                .build();
+        orderRepository.save(newOrder);
+        orderItemRepository.deleteByOrders_OrderId(Base64.getDecoder().decode(orderId));
+        createOrderItem(orderRequestDTO, newOrder);
+        return "Order Updated";
     }
 }

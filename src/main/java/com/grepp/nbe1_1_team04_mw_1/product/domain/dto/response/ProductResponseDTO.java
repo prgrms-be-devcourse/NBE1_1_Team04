@@ -1,9 +1,15 @@
 package com.grepp.nbe1_1_team04_mw_1.product.domain.dto.response;
 
 import com.grepp.nbe1_1_team04_mw_1.product.domain.entity.Products;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Base64;
-
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ProductResponseDTO {
     private String productId;
 

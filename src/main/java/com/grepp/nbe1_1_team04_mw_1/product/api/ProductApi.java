@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/orders")
+@RequestMapping("/products")
 public class ProductApi {
     private final ProductService productService;
 
@@ -25,10 +25,7 @@ public class ProductApi {
     @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
         List<Products> products = productService.getAllProducts();
-        List<ProductResponseDTO> productResponseDTOS = new ArrayList<>();
-        for(Products product: products) {
-            productResponseDTOS.add(new ProductResponseDTO(product));
-        }
+        List<ProductResponseDTO> productResponseDTOS = products.stream().map(ProductResponseDTO::new).toList();
         return ResponseEntity.ok(productResponseDTOS);
     }
 
