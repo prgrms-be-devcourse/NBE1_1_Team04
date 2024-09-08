@@ -9,14 +9,26 @@ import org.grepp.nbe1_1_team04.global.entity.BaseTimeEntity;
 @Entity(name = "order")
 public class OrderEntity extends BaseTimeEntity {
     @Id
-    private Byte[] orderId;
+    private byte[] orderId;
     private String email;
     private String address;
     private String postcode;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public Byte[] getOrderId() {
+    public OrderEntity(byte[] orderId, String email, String address, String postcode, OrderStatus orderStatus) {
+        this.orderId = orderId;
+        this.email = email;
+        this.address = address;
+        this.postcode = postcode;
+        this.orderStatus = orderStatus;
+    }
+
+    public OrderEntity() {
+
+    }
+
+    public byte[] getOrderId() {
         return orderId;
     }
 

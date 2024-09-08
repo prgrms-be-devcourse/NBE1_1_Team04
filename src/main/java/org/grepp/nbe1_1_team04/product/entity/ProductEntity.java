@@ -11,7 +11,7 @@ import org.grepp.nbe1_1_team04.product.controller.ProductController;
 @Entity(name = "product")
 public class ProductEntity extends BaseTimeEntity {
     @Id
-    private Byte[] productId;
+    private byte[] productId;
     private String productName;
     private String description;
 
@@ -19,7 +19,19 @@ public class ProductEntity extends BaseTimeEntity {
     private ProductCategory category;
     private Long price;
 
-    public Byte[] getProductId() {
+    public ProductEntity(byte[] productId, String productName, String description, ProductCategory category, Long price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+    }
+
+    public ProductEntity() {
+
+    }
+
+    public byte[] getProductId() {
         return productId;
     }
 

@@ -10,6 +10,11 @@ public class OrderItemsEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private long price;
+    private int quantity;
+
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -19,12 +24,17 @@ public class OrderItemsEntity extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @Enumerated(EnumType.STRING)
-    private ProductCategory category;
+    public OrderItemsEntity(long price, int quantity, ProductCategory category, OrderEntity order, ProductEntity product) {
+        this.price = price;
+        this.quantity = quantity;
+        this.category = category;
+        this.order = order;
+        this.product = product;
+    }
 
-    private long price;
+    public OrderItemsEntity() {
 
-    private int quantity;
+    }
 
     public long getId() {
         return id;
