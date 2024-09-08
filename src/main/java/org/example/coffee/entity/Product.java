@@ -3,17 +3,13 @@ package org.example.coffee.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "products")
-@Getter
+@Data
 @NoArgsConstructor @AllArgsConstructor
-@ToString
 public class Product {
 
     @Id
@@ -26,7 +22,7 @@ public class Product {
     private String category;
 
     @Column(nullable = false)
-    private long price;
+    private Long price;
 
     @Column(length = 500)
     private String description;

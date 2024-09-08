@@ -28,10 +28,10 @@ public class OrderItem {
     private String category;
 
     @Column(nullable = false)
-    private long price;
+    private Long price;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
