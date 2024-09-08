@@ -1,14 +1,12 @@
 package com.grepp.nbe1_1_team04_mw_1.product.api;
 
+import com.grepp.nbe1_1_team04_mw_1.product.domain.dto.request.ProductRequestDTO;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.dto.response.ProductResponseDTO;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.entity.Products;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +30,20 @@ public class ProductApi {
             productResponseDTOS.add(new ProductResponseDTO(product));
         }
         return ResponseEntity.ok(productResponseDTOS);
+    }
+
+    @PostMapping
+    public ResponseEntity<String> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+        return ResponseEntity.ok(productService.addProduct(productRequestDTO.toEntity()));
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<String> updateProduct(@PathVariable String productId, @RequestBody ProductRequestDTO productRequestDTO) {
+        return ResponseEntity.ok(productService.updateProduct(productId, productRequestDTO.toEntity()));
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable String productId) {
+        return ResponseEntity.ok(productService.deleteProduct(productId));
     }
 }

@@ -3,18 +3,15 @@ package com.grepp.nbe1_1_team04_mw_1.product.domain.entity;
 import com.grepp.nbe1_1_team04_mw_1.global.entity.BaseTimeEntity;
 import com.grepp.nbe1_1_team04_mw_1.order_item.domain.entity.OrderItems;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Products extends BaseTimeEntity {
 
@@ -48,5 +45,9 @@ public class Products extends BaseTimeEntity {
                 "description = " + getDescription() + ", " +
                 "createdAt = " + getCreatedAt() + ", " +
                 "updatedAt = " + getUpdatedAt() + ")";
+    }
+
+    public void createUUID(byte[] uuid){
+        this.productId = uuid;
     }
 }

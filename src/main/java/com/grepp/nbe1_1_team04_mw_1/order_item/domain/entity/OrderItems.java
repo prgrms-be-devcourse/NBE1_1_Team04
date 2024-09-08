@@ -4,16 +4,13 @@ import com.grepp.nbe1_1_team04_mw_1.global.entity.BaseTimeEntity;
 import com.grepp.nbe1_1_team04_mw_1.order.domain.entity.Orders;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.entity.Products;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "order_items")
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class OrderItems extends BaseTimeEntity {
 

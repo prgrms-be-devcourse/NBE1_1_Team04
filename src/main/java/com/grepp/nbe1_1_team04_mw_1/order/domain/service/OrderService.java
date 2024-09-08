@@ -32,7 +32,7 @@ public class OrderService {
 
     @Transactional
     public String placeOrder(OrderRequestDTO orderRequestDTO) {
-        Optional<Orders> order = Optional.empty();
+        Optional<Orders> order;
         Orders newOrder;
         if(!checkAfter2pm()){
             //어제 오후 2시 이후 주문 찾기
