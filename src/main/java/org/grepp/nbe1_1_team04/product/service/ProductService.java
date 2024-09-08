@@ -23,15 +23,15 @@ public class ProductService {
         return  null;
     }
 
-    public ProductResponse getProduct() {
+    public ProductResponse getProduct(byte[] productId) {
         return null;
     }
 
-    public void updateProduct(ProductRequest productRequest, long productId) {
+    public void updateProduct(ProductRequest productRequest, byte[] productId) {
 
     }
 
-    public void deleteProduct(long productId) {
+    public void deleteProduct(byte[] productId) {
 
     }
 }
