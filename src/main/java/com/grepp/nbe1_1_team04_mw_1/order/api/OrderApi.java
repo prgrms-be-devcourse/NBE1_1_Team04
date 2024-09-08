@@ -2,6 +2,7 @@ package com.grepp.nbe1_1_team04_mw_1.order.api;
 
 import com.grepp.nbe1_1_team04_mw_1.order.domain.dto.request.OrderRequestDTO;
 import com.grepp.nbe1_1_team04_mw_1.order.domain.dto.response.OrderResponseDTO;
+import com.grepp.nbe1_1_team04_mw_1.order.domain.dto.response.OrderSingleResponseDTO;
 import com.grepp.nbe1_1_team04_mw_1.order.domain.entity.Orders;
 import com.grepp.nbe1_1_team04_mw_1.order.domain.service.OrderService;
 import com.grepp.nbe1_1_team04_mw_1.order_item.domain.entity.OrderItems;
@@ -35,18 +36,21 @@ public class OrderApi {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable String orderId) {
-        return ResponseEntity.ok(new OrderResponseDTO(orderService.getOrder(orderId)));
-    }
-
-    @GetMapping("/update/{orderId}")
-    public ResponseEntity<List<ProductUpdateResponseDTO>> updateOrder(@PathVariable String orderId) {
+    public ResponseEntity<OrderSingleResponseDTO> getOrder(@PathVariable String orderId) {
         List<OrderItems> orderItems = orderItemService.getOrderItems(orderId);
         List<ProductUpdateResponseDTO> productUpdateResponseDTOS = orderItems.stream().map(ProductUpdateResponseDTO::new).toList();
-        return ResponseEntity.ok(productUpdateResponseDTOS);
+        return ResponseEntity.ok(new OrderSingleResponseDTO(orderService.getOrder(orderId), productUpdateResponseDTOS));
     }
 
-    @PutMapping("/update/{orderId}")
+    //단건 조회에 해당 기능 있음
+//    @GetMapping("/update/{orderId}")
+//    public ResponseEntity<List<ProductUpdateResponseDTO>> updateOrder(@PathVariable String orderId) {
+//        List<OrderItems> orderItems = orderItemService.getOrderItems(orderId);
+//        List<ProductUpdateResponseDTO> productUpdateResponseDTOS = orderItems.stream().map(ProductUpdateResponseDTO::new).toList();
+//        return ResponseEntity.ok(productUpdateResponseDTOS);
+//    }
+
+    @PutMapping("/{orderId}")
     public ResponseEntity<String> updateOrder(@PathVariable String orderId, @RequestBody OrderRequestDTO orderRequest) {
         return ResponseEntity.ok(orderService.updateOrder(orderId, orderRequest));
     }

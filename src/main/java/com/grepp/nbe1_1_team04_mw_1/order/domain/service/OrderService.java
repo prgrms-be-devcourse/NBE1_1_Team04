@@ -61,6 +61,9 @@ public class OrderService {
     }
 
     public void createOrderItem(OrderRequestDTO orderRequestDTO, Orders order) {
+        if(orderRequestDTO.orderItems().isEmpty()) {
+            throw new RuntimeException("상품을 추가해주세요");
+        }
         for(OrderItemInfo itemInfo : orderRequestDTO.orderItems()){
             Optional<OrderItems> orderItems = orderItemRepository.findByOrders_OrderIdAndProducts_ProductId(order.getOrderId(), Base64.getDecoder().decode(itemInfo.productId()));
             Products products = productRepository.findById(Base64.getDecoder().decode(itemInfo.productId())).orElseThrow(()-> new RuntimeException("해당 상품은 존재하지 않습니다"));
