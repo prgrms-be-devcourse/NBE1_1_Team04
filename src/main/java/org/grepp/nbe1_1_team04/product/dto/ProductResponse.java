@@ -1,13 +1,13 @@
 package org.grepp.nbe1_1_team04.product.dto;
 
 public class ProductResponse {
-    private Byte[] productId;
+    private byte[] productId;
     private String productName;
     private String category;
     private long price;
     private String description;
 
-    public ProductResponse(Byte[] productId, String productName, String category, long price, String description) {
+    public ProductResponse(byte[] productId, String productName, String category, long price, String description) {
         this.productId = productId;
         this.productName = productName;
         this.category = category;
@@ -15,7 +15,7 @@ public class ProductResponse {
         this.description = description;
     }
 
-    public Byte[] getProductId() {
+    public byte[] getProductId() {
         return productId;
     }
 
