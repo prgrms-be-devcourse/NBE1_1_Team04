@@ -37,4 +37,14 @@ public class OrderItem {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public OrderItem(Product product, Order order, String category, Long price, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.product = product;
+        this.order = order;
+        this.category = category;
+        this.price = price;
+        this.quantity = quantity;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }
