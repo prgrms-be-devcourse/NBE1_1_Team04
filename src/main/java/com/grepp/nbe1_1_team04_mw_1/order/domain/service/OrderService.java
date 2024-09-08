@@ -116,4 +116,8 @@ public class OrderService {
         createOrderItem(orderRequestDTO, newOrder);
         return "Order Updated";
     }
+
+    public List<Orders> getAllOrders(){
+        return orderRepository.findAll();
+    }
 }

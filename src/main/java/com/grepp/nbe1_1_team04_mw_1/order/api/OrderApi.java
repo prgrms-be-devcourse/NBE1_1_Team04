@@ -27,6 +27,13 @@ public class OrderApi {
         return ResponseEntity.ok(orderService.placeOrder(orderRequest));
     }
 
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
+        List<Orders> orders = orderService.getAllOrders();
+        List<OrderResponseDTO> orderResponseDTOs = orders.stream().map(OrderResponseDTO::new).toList();
+        return ResponseEntity.ok(orderResponseDTOs);
+    }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable String orderId) {
         return ResponseEntity.ok(new OrderResponseDTO(orderService.getOrder(orderId)));
