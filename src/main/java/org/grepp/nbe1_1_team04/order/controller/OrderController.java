@@ -27,8 +27,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getOrders() {
-        List<OrderResponse> orderList = orderService.getOrders();
+    public ResponseEntity<List<OrderResponse>> getOrders(@RequestParam String email) {
+        List<OrderResponse> orderList = orderService.getOrders(email);
         return ResponseEntity.ok().body(orderList);
     }
 

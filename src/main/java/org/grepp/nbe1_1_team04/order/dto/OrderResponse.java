@@ -17,6 +17,13 @@ public class OrderResponse {
         this.orderItems = orderItems;
     }
 
+    public OrderResponse(byte[] orderId, String email, String address, String postCode) {
+        this.orderId = orderId;
+        this.email = email;
+        this.address = address;
+        this.postCode = postCode;
+    }
+
     public byte[] getOrderId() {
         return orderId;
     }
