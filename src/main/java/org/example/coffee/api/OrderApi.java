@@ -54,6 +54,9 @@ public class OrderApi {
     }
 
 
+    /**
+     * 주문 삭제
+     */
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable("id") String orderId) {
         orderService.deleteOrder(orderId);
