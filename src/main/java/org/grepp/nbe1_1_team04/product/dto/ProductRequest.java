@@ -1,5 +1,8 @@
 package org.grepp.nbe1_1_team04.product.dto;
 
+import org.grepp.nbe1_1_team04.product.entity.ProductCategory;
+import org.grepp.nbe1_1_team04.product.entity.ProductEntity;
+
 public class ProductRequest {
     private String productName;
     private String description;
@@ -11,6 +14,15 @@ public class ProductRequest {
         this.description = description;
         this.category = category;
         this.price = price;
+    }
+
+    public ProductEntity toEntity(ProductRequest productRequest) {
+        return new ProductEntity(
+                this.productName,
+                this.description,
+                ProductCategory.valueOf(this.category),
+                this.price
+        );
     }
 
     public String getProductName() {
