@@ -1,5 +1,7 @@
 package com.grepp.nbe1_1_team04_mw_1.product.domain.service;
 
+import com.grepp.nbe1_1_team04_mw_1.global.exception.CustomErrorCode;
+import com.grepp.nbe1_1_team04_mw_1.global.exception.CustomException;
 import com.grepp.nbe1_1_team04_mw_1.global.util.UUIDUtil;
 import com.grepp.nbe1_1_team04_mw_1.order_item.domain.repository.OrderItemRepository;
 import com.grepp.nbe1_1_team04_mw_1.product.domain.dto.request.ProductRequestDTO;
@@ -21,7 +23,7 @@ public class ProductService {
     private final UUIDUtil uuidUtil;
 
     public Products getProducts(String productId) {
-        return productRepository.findById(Base64.getDecoder().decode(productId)).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productRepository.findById(Base64.getDecoder().decode(productId)).orElseThrow(() -> new CustomException(CustomErrorCode.PRODUCT_NOT_FOUND));
     }
 
     public List<Products> getAllProducts() {
@@ -38,7 +40,7 @@ public class ProductService {
     @Transactional
     public String updateProduct(String productId, Products product) {
         Products oldProduct = productRepository.findById(Base64.getDecoder().decode(productId))
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new CustomException(CustomErrorCode.PRODUCT_NOT_FOUND));
         Products newProduct = Products.builder()
                 .productId(oldProduct.getProductId())
                 .productName(product.getProductName()==null?oldProduct.getProductName():product.getProductName())

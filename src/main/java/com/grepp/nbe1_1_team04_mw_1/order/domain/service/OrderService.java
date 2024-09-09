@@ -1,5 +1,7 @@
 package com.grepp.nbe1_1_team04_mw_1.order.domain.service;
 
+import com.grepp.nbe1_1_team04_mw_1.global.exception.CustomErrorCode;
+import com.grepp.nbe1_1_team04_mw_1.global.exception.CustomException;
 import com.grepp.nbe1_1_team04_mw_1.global.util.UUIDUtil;
 import com.grepp.nbe1_1_team04_mw_1.order.domain.dto.request.OrderItemInfo;
 import com.grepp.nbe1_1_team04_mw_1.order.domain.dto.request.OrderRequestDTO;
@@ -62,11 +64,11 @@ public class OrderService {
 
     public void createOrderItem(OrderRequestDTO orderRequestDTO, Orders order) {
         if(orderRequestDTO.orderItems().isEmpty()) {
-            throw new RuntimeException("상품을 추가해주세요");
+            throw new CustomException(CustomErrorCode.DO_NOT_ADD_PRODUCT);
         }
         for(OrderItemInfo itemInfo : orderRequestDTO.orderItems()){
             Optional<OrderItems> orderItems = orderItemRepository.findByOrders_OrderIdAndProducts_ProductId(order.getOrderId(), Base64.getDecoder().decode(itemInfo.productId()));
-            Products products = productRepository.findById(Base64.getDecoder().decode(itemInfo.productId())).orElseThrow(()-> new RuntimeException("해당 상품은 존재하지 않습니다"));
+            Products products = productRepository.findById(Base64.getDecoder().decode(itemInfo.productId())).orElseThrow(()-> new CustomException(CustomErrorCode.PRODUCT_NOT_FOUND));
             if(orderItems.isEmpty()) {
                 orderItemRepository.save(OrderItems.builder()
                         .products(products)
@@ -98,7 +100,7 @@ public class OrderService {
     public Orders getOrder(String orderId) {
         Optional<Orders> order = orderRepository.findById(Base64.getDecoder().decode(orderId));
         if(order.isEmpty()) {
-            throw new RuntimeException("해당 주문은 존재하지 않습니다");
+            throw new CustomException(CustomErrorCode.ORDER_NOT_FOUND);
         }
         return order.get();
     }
@@ -106,7 +108,7 @@ public class OrderService {
     @Transactional
     public String updateOrder(String orderId, OrderRequestDTO orderRequestDTO) {
         Orders order = orderRequestDTO.toEntity();
-        Orders oldOrder = orderRepository.findById(Base64.getDecoder().decode(orderId)).orElseThrow(()-> new RuntimeException("해당 주문은 존재하지 않습니다"));
+        Orders oldOrder = orderRepository.findById(Base64.getDecoder().decode(orderId)).orElseThrow(()-> new CustomException(CustomErrorCode.ORDER_NOT_FOUND));
         Orders newOrder = Orders.builder()
                 .orderId(oldOrder.getOrderId())
                 .email(order.getEmail()==null ? oldOrder.getEmail() : order.getEmail())
