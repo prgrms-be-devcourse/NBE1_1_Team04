@@ -1,6 +1,9 @@
-package org.example.coffee.exception;
+package org.example.coffee.exception.exceptionhandler;
 
-import org.example.coffee.dto.ErrorDTO;
+import org.example.coffee.exception.EmailMismatchForOrderException;
+import org.example.coffee.exception.OrderNotFoundException;
+import org.example.coffee.exception.ProductNotFoundException;
+import org.example.coffee.exception.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

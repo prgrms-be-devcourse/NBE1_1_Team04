@@ -1,18 +1,13 @@
-package org.example.coffee.mapper;
+package org.example.coffee.order;
 
-import org.aspectj.weaver.ast.Or;
-import org.example.coffee.dto.OrderRequest;
-import org.example.coffee.dto.OrderResponse;
-import org.example.coffee.dto.ProductResponse;
-import org.example.coffee.entity.Order;
-import org.example.coffee.entity.OrderItem;
-import org.example.coffee.entity.Product;
+import org.example.coffee.order.dto.OrderRequest;
+import org.example.coffee.order.dto.OrderResponse;
+import org.example.coffee.order.entity.Order;
+import org.example.coffee.product.ProductMapper;
 import org.example.coffee.util.UUIDUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class OrderMapper {
 

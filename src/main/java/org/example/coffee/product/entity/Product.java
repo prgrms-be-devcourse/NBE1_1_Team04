@@ -1,4 +1,4 @@
-package org.example.coffee.entity;
+package org.example.coffee.product.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

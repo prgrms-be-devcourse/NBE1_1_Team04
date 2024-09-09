@@ -1,4 +1,4 @@
-package org.example.coffee.dto;
+package org.example.coffee.exception.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

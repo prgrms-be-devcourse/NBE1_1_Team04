@@ -1,4 +1,4 @@
-package org.example.coffee.dto;
+package org.example.coffee.product.dto;
 
 import lombok.Data;
 

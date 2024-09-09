@@ -1,8 +1,8 @@
-package org.example.coffee.mapper;
+package org.example.coffee.product;
 
-import org.example.coffee.dto.ProductRequest;
-import org.example.coffee.dto.ProductResponse;
-import org.example.coffee.entity.Product;
+import org.example.coffee.product.dto.ProductRequest;
+import org.example.coffee.product.dto.ProductResponse;
+import org.example.coffee.product.entity.Product;
 import org.example.coffee.util.UUIDUtil;
 
 import java.time.LocalDateTime;

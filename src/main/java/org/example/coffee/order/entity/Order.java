@@ -1,4 +1,4 @@
-package org.example.coffee.entity;
+package org.example.coffee.order.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,16 +1,16 @@
-package org.example.coffee.service;
+package org.example.coffee.order.sevice;
 
-import org.example.coffee.dto.OrderRequest;
-import org.example.coffee.dto.OrderResponse;
-import org.example.coffee.entity.Order;
-import org.example.coffee.entity.OrderItem;
-import org.example.coffee.entity.Product;
+import org.example.coffee.order.dto.OrderRequest;
+import org.example.coffee.order.dto.OrderResponse;
+import org.example.coffee.order.entity.Order;
+import org.example.coffee.order.entity.OrderItem;
+import org.example.coffee.product.entity.Product;
 import org.example.coffee.exception.EmailMismatchForOrderException;
 import org.example.coffee.exception.OrderNotFoundException;
 import org.example.coffee.exception.ProductNotFoundException;
-import org.example.coffee.mapper.OrderMapper;
-import org.example.coffee.repository.OrderRepository;
-import org.example.coffee.repository.ProductRepository;
+import org.example.coffee.order.OrderMapper;
+import org.example.coffee.order.repository.OrderRepository;
+import org.example.coffee.product.reposiotry.ProductRepository;
 import org.example.coffee.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

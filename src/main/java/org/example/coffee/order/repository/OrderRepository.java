@@ -1,11 +1,10 @@
-package org.example.coffee.repository;
+package org.example.coffee.order.repository;
 
-import org.example.coffee.entity.Order;
+import org.example.coffee.order.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, byte[]> {

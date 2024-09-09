@@ -1,11 +1,11 @@
-package org.example.coffee.service;
+package org.example.coffee.product.service;
 
-import org.example.coffee.dto.ProductRequest;
-import org.example.coffee.dto.ProductResponse;
-import org.example.coffee.entity.Product;
+import org.example.coffee.product.dto.ProductRequest;
+import org.example.coffee.product.dto.ProductResponse;
+import org.example.coffee.product.entity.Product;
 import org.example.coffee.exception.ProductNotFoundException;
-import org.example.coffee.mapper.ProductMapper;
-import org.example.coffee.repository.ProductRepository;
+import org.example.coffee.product.ProductMapper;
+import org.example.coffee.product.reposiotry.ProductRepository;
 import org.example.coffee.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,7 @@
-package org.example.coffee.dto;
+package org.example.coffee.order.dto;
 
 import lombok.Data;
+import org.example.coffee.product.dto.ProductResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;

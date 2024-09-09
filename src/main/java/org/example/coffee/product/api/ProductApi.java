@@ -1,8 +1,8 @@
-package org.example.coffee.api;
+package org.example.coffee.product.api;
 
-import org.example.coffee.dto.ProductRequest;
-import org.example.coffee.dto.ProductResponse;
-import org.example.coffee.service.ProductService;
+import org.example.coffee.product.dto.ProductRequest;
+import org.example.coffee.product.dto.ProductResponse;
+import org.example.coffee.product.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

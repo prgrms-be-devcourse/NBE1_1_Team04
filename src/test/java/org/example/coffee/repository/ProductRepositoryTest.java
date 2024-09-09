@@ -1,18 +1,16 @@
 package org.example.coffee.repository;
 
 import org.assertj.core.api.Assertions;
-import org.example.coffee.entity.Product;
-import org.example.coffee.util.UUIDUtil;
+import org.example.coffee.product.entity.Product;
+import org.example.coffee.product.reposiotry.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.example.coffee.util.UUIDUtil.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest

@@ -1,9 +1,10 @@
-package org.example.coffee.entity;
+package org.example.coffee.order.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.coffee.product.entity.Product;
 
 import java.time.LocalDateTime;
 
