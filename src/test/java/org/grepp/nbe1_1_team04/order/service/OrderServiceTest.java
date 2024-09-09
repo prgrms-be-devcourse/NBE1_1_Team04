@@ -10,6 +10,8 @@ import org.grepp.nbe1_1_team04.order.repository.OrderItemsRepository;
 import org.grepp.nbe1_1_team04.order.repository.OrderRepository;
 import org.grepp.nbe1_1_team04.product.entity.ProductCategory;
 import org.grepp.nbe1_1_team04.product.entity.ProductEntity;
+import org.grepp.nbe1_1_team04.product.repository.ProductRepository;
+import org.grepp.nbe1_1_team04.util.UUIDUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,18 +33,26 @@ public class OrderServiceTest {
     private OrderService orderService;
 
     @Mock
+    private UUIDUtil uuidUtil;
+
+    @Mock
     private OrderRepository orderRepository;
 
     @Mock
     private OrderItemsRepository orderItemsRepository;
 
+    @Mock
+    private ProductRepository productRepository;
+
     @Test
     @DisplayName("주문 추가 테스트")
     void registerOrder() {
         //given
+        when(uuidUtil.createRandomUUID()).thenReturn("1234".getBytes());
         OrderRequest orderRequest = new OrderRequest("test@test.com", "주소1", "우편번호1", new ArrayList<>());
         orderRequest.getOrderItems().add(new OrderItemInfo("1234".getBytes(), 50));
         orderRequest.getOrderItems().add(new OrderItemInfo("5678".getBytes(), 100));
+        when(productRepository.findById(any())).thenReturn(Optional.of(new ProductEntity("이름1", "설명1", ProductCategory.COFFEE, 5000L)));
 
         //when
         orderService.createOrder(orderRequest);
@@ -56,8 +66,8 @@ public class OrderServiceTest {
     @DisplayName("주문 리스트 조회 테스트")
     void getOrdersTest() {
         //given
-        OrderEntity newOrder1 = new OrderEntity("1234".getBytes(), "test@test.com", "주소1", "우편번호1", OrderStatus.valueOf("주문완료"));
-        OrderEntity newOrder2 = new OrderEntity("5678".getBytes(), "test@test.com", "주소1", "우편번호1", OrderStatus.valueOf("배송중"));
+        OrderEntity newOrder1 = new OrderEntity("1234".getBytes(), "test@test.com", "주소1", "우편번호1", OrderStatus.valueOf("ORDERED"));
+        OrderEntity newOrder2 = new OrderEntity("5678".getBytes(), "test@test.com", "주소1", "우편번호1", OrderStatus.valueOf("DELIVERING"));
         ProductEntity newProduct1 = new ProductEntity("1235".getBytes(), "이름1", "설명1", ProductCategory.COFFEE, 5000L);
         ProductEntity newProduct2 = new ProductEntity("1237".getBytes(), "이름2", "설명2", ProductCategory.COFFEE, 3000L);
 
@@ -67,15 +77,15 @@ public class OrderServiceTest {
                 new OrderItemsEntity(3000, 5, ProductCategory.COFFEE, newOrder1, newProduct2)
         );
 
-        when(orderRepository.findAll()).thenReturn(orderEntities);
+        when(orderRepository.findByEmail("test@test.com")).thenReturn(orderEntities);
         when(orderItemsRepository.findByOrder(newOrder1)).thenReturn(orderItemEntities);
 
         //when
-        List<OrderResponse> orderResponses = orderService.getOrders();
+        List<OrderResponse> orderResponses = orderService.getOrders("test@test.com");
 
         //then
         assertThat(orderResponses.size()).isEqualTo(2);
-        assertThat(orderResponses.get(0).getProducts().size()).isEqualTo(2);
+        assertThat(orderResponses.get(0).getOrderItems().size()).isEqualTo(2);
     }
 
     @Test
@@ -84,7 +94,7 @@ public class OrderServiceTest {
         //given
         byte[] orderId = "1234".getBytes();
 
-        Optional<OrderEntity> orderEntity = Optional.of(new OrderEntity(orderId, "test@test.com", "주소1", "우편번호1",OrderStatus.valueOf("주문완료")));
+        Optional<OrderEntity> orderEntity = Optional.of(new OrderEntity(orderId, "test@test.com", "주소1", "우편번호1",OrderStatus.valueOf("ORDERED")));
         ProductEntity newProduct1 = new ProductEntity("1235".getBytes(), "이름1", "설명1", ProductCategory.COFFEE, 5000L);
         ProductEntity newProduct2 = new ProductEntity("1237".getBytes(), "이름2", "설명2", ProductCategory.COFFEE, 3000L);
         List<OrderItemsEntity> orderItemEntities = List.of(
@@ -99,7 +109,7 @@ public class OrderServiceTest {
 
         //then
         assertThat(orderResponse).isNotNull();
-        assertThat(orderResponse.getProducts().size()).isEqualTo(2);
+        assertThat(orderResponse.getOrderItems().size()).isEqualTo(2);
     }
 
     @Test
@@ -124,6 +134,7 @@ public class OrderServiceTest {
     void deleteProductTest() {
         //given
         byte[] orderId = "1234".getBytes();
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(new OrderEntity(orderId, "test@test.com", "주소1", "우편번호1",OrderStatus.valueOf("ORDERED"))));
 
         //when
         orderService.deleteOrder(orderId);
@@ -131,6 +142,5 @@ public class OrderServiceTest {
         //then
         verify(orderRepository, times(1)).deleteById(orderId);
         verify(orderItemsRepository).deleteByOrder(any(OrderEntity.class));
-
     }
 }
