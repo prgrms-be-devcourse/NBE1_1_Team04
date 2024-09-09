@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpMethod> createProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<HttpStatus> createProduct(@RequestBody ProductRequest productRequest) {
         productService.registerProduct(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -37,13 +37,13 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<HttpMethod> updateProduct(@RequestBody ProductRequest productRequest, @PathVariable byte[] productId) {
+    public ResponseEntity<HttpStatus> updateProduct(@RequestBody ProductRequest productRequest, @PathVariable byte[] productId) {
         productService.updateProduct(productRequest, productId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<HttpMethod> deleteProduct(@PathVariable byte[] productId) {
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable byte[] productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.ok().build();
     }
