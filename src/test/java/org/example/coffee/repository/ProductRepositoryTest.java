@@ -6,6 +6,7 @@ import org.example.coffee.product.reposiotry.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +15,7 @@ import static org.example.coffee.util.UUIDUtil.*;
 
 
 @SpringBootTest
-//@Transactional
+@Transactional
 class ProductRepositoryTest {
 
     @Autowired
