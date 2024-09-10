@@ -5,6 +5,7 @@ import org.grepp.nbe1_1_team04.order.dto.OrderRequest;
 import org.grepp.nbe1_1_team04.order.dto.OrderResponse;
 import org.grepp.nbe1_1_team04.order.entity.OrderEntity;
 import org.grepp.nbe1_1_team04.order.entity.OrderItemsEntity;
+import org.grepp.nbe1_1_team04.order.entity.OrderStatus;
 import org.grepp.nbe1_1_team04.order.repository.OrderItemsRepository;
 import org.grepp.nbe1_1_team04.order.repository.OrderRepository;
 import org.grepp.nbe1_1_team04.product.entity.ProductEntity;
@@ -12,6 +13,8 @@ import org.grepp.nbe1_1_team04.product.repository.ProductRepository;
 import org.grepp.nbe1_1_team04.util.UUIDUtil;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,14 +34,38 @@ public class OrderService {
     }
 
     public void createOrder(OrderRequest orderRequest) {
-        byte[] orderId = uuidUtil.createRandomUUID();
 
+        byte[] orderId;
         OrderEntity orderEntity = orderRequest.toOrderEntity();
-        orderEntity.updateOrderId(orderId);
+
+        if ((orderId = findOrderDuplicateTime(orderRequest.getEmail())) != null) {
+            orderEntity.updateOrderId(orderId);
+        }
+        else {
+            orderId = uuidUtil.createRandomUUID();
+            orderEntity.updateOrderId(orderId);
+        }
 
         OrderEntity savedOrder = orderRepository.save(orderEntity);
         List<OrderItemInfo> orderItems = orderRequest.getOrderItems();
         saveOrderItems(orderItems, savedOrder);
+    }
+
+    private byte[] findOrderDuplicateTime(String email) {
+        OrderEntity orderEntity = orderRepository.findByEmailOrderByCreatedAtDesc(email)
+                .stream().findFirst().orElse(null);
+
+        if (orderEntity == null) {
+            return null;
+        }
+
+        if (orderEntity.getOrderStatus().equals(OrderStatus.ORDERED) &&
+        orderEntity.getCreatedAt().getDayOfMonth() == LocalDate.now().getDayOfMonth() ||
+        orderEntity.getCreatedAt().getDayOfMonth() == LocalDateTime.now().minusDays(1L).getDayOfMonth()) {
+            return orderEntity.getOrderId();
+        }
+
+        return null;
     }
 
     private void saveOrderItems(List<OrderItemInfo> orderItems, OrderEntity savedOrder) {

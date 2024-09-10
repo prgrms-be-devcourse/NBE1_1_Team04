@@ -40,6 +40,10 @@ public class OrderEntity extends BaseTimeEntity {
         this.orderId = orderId;
     }
 
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     public OrderResponse toResponse() {
         return new OrderResponse(
                 this.orderId,
