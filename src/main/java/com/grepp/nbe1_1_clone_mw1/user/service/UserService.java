@@ -37,4 +37,11 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public void logout() {
+        HttpSession session = SessionUtil.getSession();
+        if (session != null) {
+            session.invalidate();
+        }
+    }
 }
