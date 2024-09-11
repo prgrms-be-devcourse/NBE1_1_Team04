@@ -33,11 +33,12 @@ public class OrderItem{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product products;
+    private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Order orders;
+    @Setter
+    private Order order;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -61,13 +62,12 @@ public class OrderItem{
         this.price = price;
     }
 
-    public static OrderItem create(Category category, long price, int quantity, Product products, Order orders) {
+    public static OrderItem create(OrderItemInfo orderItemInfo, Product product) {
         return OrderItem.builder()
-                .category(category)
-                .price(price)
-                .quantity(quantity)
-                .products(products)
-                .orders(orders)
+                .category(orderItemInfo.category())
+                .price(orderItemInfo.price())
+                .quantity(orderItemInfo.quantity())
+                .product(product)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

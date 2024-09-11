@@ -27,7 +27,7 @@ public class Order {
   @Column(name = "postcode", nullable = false)
   private String postcode;
 
-  @OneToMany(mappedBy = "orders", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<OrderItem> orderItems;
 
   @Column(name = "order_status", nullable = false)
@@ -40,16 +40,18 @@ public class Order {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
-  public static Order create(String email, String address, String postcode){
-    return Order.builder()
+  public static Order create(OrderContent content, List<OrderItem> orderItems){
+    Order order = Order.builder()
             .orderId(UUIDUtil.createUUID())
-            .email(email)
-            .address(address)
-            .postcode(postcode)
+            .email(content.email())
+            .address(content.address())
+            .postcode(content.postcode())
             .orderStatus(OrderStatus.ACCEPTED)
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
             .build();
+
+    return order.addOrderItems(orderItems);
   }
 
   public void updateStatus(OrderStatus status){
@@ -59,5 +61,31 @@ public class Order {
 
   public void updateOrderItems(List<OrderItem> orderItems){
     this.orderItems = orderItems;
+  }
+
+  // 연관관계 편의
+  public Order addOrderItems(List<OrderItem> orderItems){
+    this.orderItems.addAll(orderItems);
+
+    for (OrderItem orderItem : orderItems) {
+      orderItem.setOrder(this);
+    }
+    return this;
+  }
+
+  public boolean isOrderer(String email){
+    return this.email.equals(email);
+  }
+
+  public void update(OrderContent updatedContent){
+      this.email = updatedContent.email();
+      this.address = updatedContent.address();
+      this.postcode = updatedContent.postcode();
+      this.updatedAt = LocalDateTime.now();
+  }
+
+  public void startDelivery() {
+    this.orderStatus = OrderStatus.SHIPPED;
+    this.updatedAt = LocalDateTime.now();
   }
 }
