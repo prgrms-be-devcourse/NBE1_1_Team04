@@ -1,4 +1,4 @@
-package com.grepp.nbe1_1_clone_mw1.member.controller.dto;
+package com.grepp.nbe1_1_clone_mw1.user.controller.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

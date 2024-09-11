@@ -1,9 +1,9 @@
-package com.grepp.nbe1_1_clone_mw1.member.repository;
+package com.grepp.nbe1_1_clone_mw1.user.repository;
 
-import com.grepp.nbe1_1_clone_mw1.member.model.Member;
+import com.grepp.nbe1_1_clone_mw1.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, byte[]> {
+public interface UserRepository extends JpaRepository<User, byte[]> {
 }

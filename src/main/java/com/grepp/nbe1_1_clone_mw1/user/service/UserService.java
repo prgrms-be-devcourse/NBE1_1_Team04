@@ -1,16 +1,16 @@
-package com.grepp.nbe1_1_clone_mw1.member.service;
+package com.grepp.nbe1_1_clone_mw1.user.service;
 
-import com.grepp.nbe1_1_clone_mw1.member.controller.dto.SignInRequest;
-import com.grepp.nbe1_1_clone_mw1.member.controller.dto.SignUpRequest;
-import com.grepp.nbe1_1_clone_mw1.member.repository.MemberRepository;
+import com.grepp.nbe1_1_clone_mw1.user.controller.dto.SignInRequest;
+import com.grepp.nbe1_1_clone_mw1.user.controller.dto.SignUpRequest;
+import com.grepp.nbe1_1_clone_mw1.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class UserService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     public void login(SignInRequest signInRequest) {
 

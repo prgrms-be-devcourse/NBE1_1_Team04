@@ -1,8 +1,8 @@
-package com.grepp.nbe1_1_clone_mw1.member.controller.api;
+package com.grepp.nbe1_1_clone_mw1.user.controller.api;
 
-import com.grepp.nbe1_1_clone_mw1.member.controller.dto.SignInRequest;
-import com.grepp.nbe1_1_clone_mw1.member.controller.dto.SignUpRequest;
-import com.grepp.nbe1_1_clone_mw1.member.service.MemberService;
+import com.grepp.nbe1_1_clone_mw1.user.controller.dto.SignInRequest;
+import com.grepp.nbe1_1_clone_mw1.user.controller.dto.SignUpRequest;
+import com.grepp.nbe1_1_clone_mw1.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class MemberRestController {
+public class UserRestController {
 
-    private final MemberService memberService;
+    private final UserService userService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@Valid @RequestBody SignInRequest signInRequest) {
-        memberService.login(signInRequest);
+        userService.login(signInRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        memberService.signUp(signUpRequest);
+        userService.signUp(signUpRequest);
         return ResponseEntity.ok().build();
     }
 }
