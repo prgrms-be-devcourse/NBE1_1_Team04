@@ -44,7 +44,7 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Review create(ReviewRequest reviewRequest){
+    public static Review create(ReviewRequest reviewRequest){
         return Review.builder()
                 .reviewName(reviewRequest.reviewName())
                 .content(reviewRequest.content())
