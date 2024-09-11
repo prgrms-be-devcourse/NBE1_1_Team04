@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, byte[]> {
   Optional<Product> findByProductName(String productName);
 
   List<Product> findByCategory(Category category);
+
+  void deleteByProductId(byte[] productId);
 }
