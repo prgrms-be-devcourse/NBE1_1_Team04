@@ -1,5 +1,6 @@
 package com.grepp.nbe1_1_clone_mw1.user.model;
 
+import com.grepp.nbe1_1_clone_mw1.global.util.UUIDUtil;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,13 +39,16 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public User(String email, String password, String address, String postCode) {
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.role = Role.USER;
-        this.postCode = postCode;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public static User create(String email, String password, String address, String postCode) {
+        return User.builder()
+                .userId(UUIDUtil.createUUID())
+                .email(email)
+                .password(password)
+                .address(address)
+                .role(Role.USER)
+                .postCode(postCode)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 }
