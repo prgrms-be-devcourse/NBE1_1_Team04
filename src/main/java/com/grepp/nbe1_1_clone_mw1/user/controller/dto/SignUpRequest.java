@@ -1,5 +1,7 @@
 package com.grepp.nbe1_1_clone_mw1.user.controller.dto;
 
+import com.grepp.nbe1_1_clone_mw1.user.model.Role;
+import com.grepp.nbe1_1_clone_mw1.user.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -22,4 +24,8 @@ public class SignUpRequest {
 
     @NotBlank(message = "우편번호를 입력해주세요.")
     private String postCode;
+
+    public User toEntity() {
+        return User.create(email, password, address, postCode);
+    }
 }
