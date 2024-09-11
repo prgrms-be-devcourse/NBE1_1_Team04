@@ -4,7 +4,10 @@ package com.grepp.nbe1_1_clone_mw1.product.controller.api;
 import com.grepp.nbe1_1_clone_mw1.product.controller.dto.ProductResponse;
 import com.grepp.nbe1_1_clone_mw1.product.model.Category;
 import com.grepp.nbe1_1_clone_mw1.product.service.ProductService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +28,11 @@ public class ProductRestController {
     return category
       .map(productService::getProductsByCategory)
       .orElse(productService.getAllProducts());
+  }
+
+  @GetMapping("/api/v1/image/{productId}")
+  public ResponseEntity<Resource> productImage(@PathVariable String productId) {
+    return productService.getProductImage(productId);
   }
 
 }
