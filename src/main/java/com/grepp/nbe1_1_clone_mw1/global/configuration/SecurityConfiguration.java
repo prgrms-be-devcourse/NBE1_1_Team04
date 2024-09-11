@@ -8,29 +8,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
-
-    private final CsrfConfiguration csrfConfiguration;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
+        http //TODO : csrf 설정하기
                 .csrf(AbstractHttpConfigurer::disable);
-//                .csrf(httpSecurityCsrfConfigurer -> {
-//                    httpSecurityCsrfConfigurer.csrfTokenRequestHandler(csrfConfiguration.requestAttributeHandler());
-//                    httpSecurityCsrfConfigurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-//                });
 
         http
                 .authorizeHttpRequests((authorize) -> {
                     authorize
-                            .requestMatchers("/api/v1/products/**").hasRole("ADMIN")
+                            .requestMatchers("/products/**").hasRole("ADMIN")
                             .anyRequest().permitAll();
                 });
 

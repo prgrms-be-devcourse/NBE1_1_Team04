@@ -23,12 +23,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public void login(SignInRequest signInRequest) {
+    public Authentication login(SignInRequest signInRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 signInRequest.getEmail(), signInRequest.getPassword()
         );
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return authentication;
     }
 
     public void signUp(SignUpRequest signUpRequest) {
