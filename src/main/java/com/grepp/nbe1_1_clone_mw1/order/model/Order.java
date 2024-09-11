@@ -2,6 +2,7 @@ package com.grepp.nbe1_1_clone_mw1.order.model;
 
 import com.grepp.nbe1_1_clone_mw1.global.util.UUIDUtil;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -27,8 +28,9 @@ public class Order {
   @Column(name = "postcode", nullable = false)
   private String postcode;
 
+  @Builder.Default
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<OrderItem> orderItems;
+  private List<OrderItem> orderItems = new ArrayList<>();
 
   @Column(name = "order_status", nullable = false)
   @Enumerated(EnumType.STRING)
