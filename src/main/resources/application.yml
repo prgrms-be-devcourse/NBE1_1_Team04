@@ -1,0 +1,32 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/coffee?useSSL=false&allowPublicKeyRetrieval=true
+    username: mysqluser
+    password: mysqlpw
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:coffee
+    driver-class-name: org.h2.Driver
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
