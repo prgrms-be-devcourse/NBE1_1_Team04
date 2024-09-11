@@ -1,17 +1,22 @@
 package com.grepp.nbe1_1_clone_mw1.product.service;
 
 
+import com.grepp.nbe1_1_clone_mw1.global.util.FileUtil;
 import com.grepp.nbe1_1_clone_mw1.global.util.UUIDUtil;
 import com.grepp.nbe1_1_clone_mw1.order.repository.OrderItemRepository;
 import com.grepp.nbe1_1_clone_mw1.product.controller.dto.ProductResponse;
 import com.grepp.nbe1_1_clone_mw1.product.controller.dto.UpdateProductRequest;
 import com.grepp.nbe1_1_clone_mw1.product.model.Category;
 import com.grepp.nbe1_1_clone_mw1.product.model.Product;
+import com.grepp.nbe1_1_clone_mw1.product.model.ProductImage;
+import com.grepp.nbe1_1_clone_mw1.product.repository.ProductImageRepository;
 import com.grepp.nbe1_1_clone_mw1.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +26,7 @@ public class DefaultProductService implements ProductService {
 
   private final ProductRepository productRepository;
   private final OrderItemRepository orderItemRepository;
+  private final ProductImageRepository productImageRepository;
 
   @Override
   public List<ProductResponse> getProductsByCategory(Category category) {
@@ -39,10 +45,18 @@ public class DefaultProductService implements ProductService {
     return productRepository.save(product);
   }
 
+  @Transactional
   @Override
-  public Product createProduct(String productName, Category category, long price, String description) {
+  public Product createProduct(String productName, Category category, long price, String description, MultipartFile[] uploadImage) {
     var product = Product.create(productName, category, price, description);
-    return productRepository.save(product);
+    Product newProduct = productRepository.save(product);
+    try {
+      List<ProductImage> saveFiles = FileUtil.saveFiles(uploadImage);
+      saveProductImage(saveFiles, newProduct.getProductId());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return newProduct;
   }
 
   @Transactional
@@ -68,6 +82,14 @@ public class DefaultProductService implements ProductService {
             .build();
 
     return productRepository.save(newProduct);
+  }
+
+  public void saveProductImage(List<ProductImage> productImages, byte[] productId) {
+    if(productImages == null || productImages.isEmpty()) return;
+    for(ProductImage fileEntity : productImages){
+      fileEntity.updateProduct(productRepository.findById(productId).orElseThrow(()->new RuntimeException("Product not found")));
+    }
+    productImageRepository.saveAll(productImages);
   }
 
 }

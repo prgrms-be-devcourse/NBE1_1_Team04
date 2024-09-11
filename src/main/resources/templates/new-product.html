@@ -14,7 +14,7 @@
 <body class="container-fluid">
 <h1>Grids & Circles</h1>
 <h2>Production Management</h2>
-<form th:action="@{/products}" method="post">
+<form th:action="@{/products}" method="post" enctype="multipart/form-data">
   <div class="mb-3">
     <label for="productName" class="form-label">Name</label>
     <input type="text" class="form-control" id="productName" name="productName">
@@ -33,6 +33,10 @@
   <div class="mb-3">
     <label for="description" class="form-label">Description</label>
     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Image</label>
+    <input type="file" name="uploadImage" multiple accept="image/*" />
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
