@@ -1,10 +1,9 @@
 package com.grepp.nbe1_1_clone_mw1.order.controller.dto;
 
-import jakarta.validation.constraints.Email;
+import com.grepp.nbe1_1_clone_mw1.auth.model.CustomUserDetail;
+import com.grepp.nbe1_1_clone_mw1.global.annotation.LoginUser;
 
 import java.util.List;
 
-public record CreateOrderRequest(
-        @Email String email, String address, String postcode, List<OrderItemInfo> orderItems
-) {
+public record CreateOrderRequest(@LoginUser CustomUserDetail userDetail, List<OrderItemInfo> orderItems) {
 }

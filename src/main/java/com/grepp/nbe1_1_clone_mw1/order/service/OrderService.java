@@ -7,5 +7,7 @@ import com.grepp.nbe1_1_clone_mw1.order.controller.dto.OrderItemInfo;
 import java.util.List;
 
 public interface OrderService {
-  CreateOrderResponse createOrder(String email, String address, String postcode, List<OrderItemInfo> orderItems);
+  CreateOrderResponse createOrder(String email, List<OrderItemInfo> orderItems);
+
+  CreateOrderResponse createAnonymousOrder(String email, String address, String postcode, List<OrderItemInfo> orderItems);
 }
