@@ -12,6 +12,7 @@ import com.grepp.nbe1_1_clone_mw1.product.model.ProductImage;
 import com.grepp.nbe1_1_clone_mw1.product.repository.ProductImageRepository;
 import com.grepp.nbe1_1_clone_mw1.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -28,10 +29,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultProductService implements ProductService {
+  @Value("${upload.path}")
+  private String uploadPath;
 
   private final ProductRepository productRepository;
   private final OrderItemRepository orderItemRepository;
@@ -60,7 +64,7 @@ public class DefaultProductService implements ProductService {
     var product = Product.create(productName, category, price, description);
     Product newProduct = productRepository.save(product);
     try {
-      List<ProductImage> saveFiles = FileUtil.saveFiles(uploadImage);
+      List<ProductImage> saveFiles = FileUtil.saveFiles(uploadImage,uploadPath);
       saveProductImage(saveFiles, newProduct.getProductId());
     } catch (IOException e) {
       e.printStackTrace();
@@ -89,6 +93,15 @@ public class DefaultProductService implements ProductService {
             .createdAt(oldProduct.getCreatedAt())
             .updatedAt(LocalDateTime.now())
             .build();
+    if(updateProductRequest.uploadImage().length != 0){
+      productImageRepository.deleteByProducts_ProductId(oldProduct.getProductId());
+      try {
+        List<ProductImage> saveFiles = FileUtil.saveFiles(updateProductRequest.uploadImage(), uploadPath);
+        saveProductImage(saveFiles, newProduct.getProductId());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
     return productRepository.save(newProduct);
   }
@@ -103,9 +116,17 @@ public class DefaultProductService implements ProductService {
 
   @Override
   public ResponseEntity<Resource> getProductImage(String productId) {
-    ProductImage productImage = productImageRepository.findFirstByProducts_ProductId(UUIDUtil.hexStringToByteArray(productId)).orElseThrow(()->new RuntimeException("Product Image not found"));
+    Optional<ProductImage> productImage = productImageRepository.findFirstByProducts_ProductId(UUIDUtil.hexStringToByteArray(productId));
     try {
-      Path path = Paths.get(productImage.getSavedPath()).normalize();
+      if(productImage.isEmpty()){
+        Path path = Paths.get(uploadPath+"/default_photo.jpg");
+        Resource resource = new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(path)) // MIME 타입 설정
+                .body(resource);
+      }
+
+      Path path = Paths.get(productImage.get().getSavedPath()).normalize();
       Resource resource = new UrlResource(path.toUri());
       if (resource.exists() && resource.isReadable()) {
         // 파일을 찾았을 때, 파일 데이터를 ResponseEntity로 반환
@@ -117,6 +138,7 @@ public class DefaultProductService implements ProductService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
       }
     } catch (Exception e) {
+      e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }

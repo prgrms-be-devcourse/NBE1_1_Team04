@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
     Optional<ProductImage> findFirstByProducts_ProductId(byte[] productId);
+
+    void deleteByProducts_ProductId(byte[] productId);
 }
