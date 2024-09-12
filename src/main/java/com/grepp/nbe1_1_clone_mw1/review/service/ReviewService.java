@@ -2,6 +2,7 @@ package com.grepp.nbe1_1_clone_mw1.review.service;
 
 import com.grepp.nbe1_1_clone_mw1.auth.model.CustomUserDetail;
 import com.grepp.nbe1_1_clone_mw1.global.util.UUIDUtil;
+import com.grepp.nbe1_1_clone_mw1.order.repository.OrderItemRepository;
 import com.grepp.nbe1_1_clone_mw1.product.model.Product;
 import com.grepp.nbe1_1_clone_mw1.product.repository.ProductRepository;
 import com.grepp.nbe1_1_clone_mw1.review.controller.dto.ReviewRequest;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public ResponseEntity<List<ReviewResponse>> getReviewsByUser(CustomUserDetail userDetail) {
         List<Review> reviews = reviewRepository.findByUser_Email(userDetail.getEmail());
@@ -45,9 +48,18 @@ public class ReviewService {
         return ResponseEntity.ok(responses);
     }
 
+    public ResponseEntity<ReviewResponse> getReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found"));
+        return ResponseEntity.ok(new ReviewResponse(review));
+    }
+
+    @Transactional
     public ResponseEntity<String> createReview(String productId, CustomUserDetail userDetail, ReviewRequest reviewRequest) {
         // 권한 설정 넣어주기
         // userId 값을 받아와서 해당 userId의 주문과 productId의 orderItem이 존재하지 않으면 주문 exception 넣어주기 // 해당 유저의 주문내역에서 주문상품 찾기
+        if (!orderItemRepository.existsByOrder_Email(userDetail.getEmail())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("no order history for the product");
+        }
         Product product = productRepository.findById(UUIDUtil.hexStringToByteArray(productId))
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         User user = userRepository.findByEmail(userDetail.getEmail())
@@ -59,6 +71,7 @@ public class ReviewService {
         return ResponseEntity.ok("review created");
     }
 
+    @Transactional
     public ResponseEntity<String> updateReview(Long reviewId, CustomUserDetail userDetail, ReviewRequest reviewRequest) {
         Review oldReview = reviewRepository.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found"));
         User user = userRepository.findByEmail(userDetail.getEmail())
@@ -81,6 +94,7 @@ public class ReviewService {
         return ResponseEntity.ok("review updated");
     }
 
+    @Transactional
     public ResponseEntity<String> deleteReview(Long reviewId, CustomUserDetail userDetail) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found"));
         User user = userRepository.findByEmail(userDetail.getEmail())

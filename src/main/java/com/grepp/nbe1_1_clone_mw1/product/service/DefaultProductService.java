@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,17 +42,20 @@ public class DefaultProductService implements ProductService {
   private final OrderItemRepository orderItemRepository;
   private final ProductImageRepository productImageRepository;
 
+  @Transactional(readOnly = true)
   @Override
   public List<ProductResponse> getProductsByCategory(Category category) {
 
     return productRepository.findByCategory(category).stream().map(ProductResponse::new).toList();
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<ProductResponse> getAllProducts() {
     return productRepository.findAll().stream().map(ProductResponse::new).toList();
   }
 
+  @Transactional
   @Override
   public Product createProduct(String productName, Category category, long price) {
     var product = Product.create(productName, category, price);
@@ -86,9 +90,9 @@ public class DefaultProductService implements ProductService {
     Product oldProduct = productRepository.findById(UUIDUtil.hexStringToByteArray(productId)).orElseThrow(()->new RuntimeException("Product not found"));
     Product newProduct = Product.builder()
             .productId(oldProduct.getProductId())
-            .productName(updateProductRequest.productName()==null ? oldProduct.getProductName() : updateProductRequest.productName())
+            .productName(updateProductRequest.productName() == null || updateProductRequest.productName().isBlank() ? oldProduct.getProductName() : updateProductRequest.productName())
             .price(updateProductRequest.price()==null ? oldProduct.getPrice() : updateProductRequest.price())
-            .description(updateProductRequest.description()==null ? oldProduct.getDescription() : updateProductRequest.description())
+            .description(updateProductRequest.description() == null || updateProductRequest.description().isBlank() ? oldProduct.getDescription() : updateProductRequest.description())
             .category(updateProductRequest.category()==null ? oldProduct.getCategory() : updateProductRequest.category())
             .createdAt(oldProduct.getCreatedAt())
             .updatedAt(LocalDateTime.now())
@@ -114,6 +118,7 @@ public class DefaultProductService implements ProductService {
     productImageRepository.saveAll(productImages);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public ResponseEntity<Resource> getProductImage(String productId) {
     Optional<ProductImage> productImage = productImageRepository.findFirstByProducts_ProductId(UUIDUtil.hexStringToByteArray(productId));
