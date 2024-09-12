@@ -100,7 +100,7 @@ public class TossPaymentController {
         } catch (RuntimeException e) {
             // 데이터베이스 작업 도중 예외 발생 시 결제 취소
             if (!paymentKey.isEmpty()) {
-                tossPaymentClient.requestPaymentCancel(paymentKey);
+                tossPaymentClient.requestPaymentCancel(paymentKey, "서버 데이터베이스 오류");
             }
             // 데이터베이스 오류 응답
             responseObject = objectMapper.valueToTree(PaymentErrorResponse.builder()
@@ -150,7 +150,7 @@ public class TossPaymentController {
      */
     @PostMapping("/cancel")
     public ResponseEntity<?> cancelPayment(@RequestBody CancelPaymentRequest cancelPaymentRequest) throws IOException, InterruptedException {
-        HttpResponse<String> response = tossPaymentClient.requestPaymentCancel(cancelPaymentRequest.paymentKey());
+        HttpResponse<String> response = tossPaymentClient.requestPaymentCancel(cancelPaymentRequest.paymentKey(), cancelPaymentRequest.cancelReason());
         if(response.statusCode() == 200) tossPaymentService.changePaymentStatus(cancelPaymentRequest.paymentKey(), TossPaymentStatus.CANCELED);
         return ResponseEntity.status(response.statusCode()).body(response.body());
     }
