@@ -97,7 +97,9 @@ public class DefaultProductService implements ProductService {
             .createdAt(oldProduct.getCreatedAt())
             .updatedAt(LocalDateTime.now())
             .build();
-    if(updateProductRequest.uploadImage().length != 0){
+
+    String saveName = updateProductRequest.uploadImage()[0].getOriginalFilename();
+    if(saveName != null && !saveName.isEmpty()){
       productImageRepository.deleteByProducts_ProductId(oldProduct.getProductId());
       try {
         List<ProductImage> saveFiles = FileUtil.saveFiles(updateProductRequest.uploadImage(), uploadPath);
