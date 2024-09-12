@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,9 +90,9 @@ public class DefaultProductService implements ProductService {
     Product oldProduct = productRepository.findById(UUIDUtil.hexStringToByteArray(productId)).orElseThrow(()->new RuntimeException("Product not found"));
     Product newProduct = Product.builder()
             .productId(oldProduct.getProductId())
-            .productName(updateProductRequest.productName()==null ? oldProduct.getProductName() : updateProductRequest.productName())
+            .productName(updateProductRequest.productName() == null || updateProductRequest.productName().isBlank() ? oldProduct.getProductName() : updateProductRequest.productName())
             .price(updateProductRequest.price()==null ? oldProduct.getPrice() : updateProductRequest.price())
-            .description(updateProductRequest.description()==null ? oldProduct.getDescription() : updateProductRequest.description())
+            .description(updateProductRequest.description() == null || updateProductRequest.description().isBlank() ? oldProduct.getDescription() : updateProductRequest.description())
             .category(updateProductRequest.category()==null ? oldProduct.getCategory() : updateProductRequest.category())
             .createdAt(oldProduct.getCreatedAt())
             .updatedAt(LocalDateTime.now())
