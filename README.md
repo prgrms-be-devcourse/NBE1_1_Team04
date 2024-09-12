@@ -53,6 +53,8 @@
 >📌 **Backend**:Spring Boot
 > 
 >📌 **Data Access** : JPA
+>
+> 📌 **Authentication & Authorization** : Spring Security
 
 <br><br>
 # ✅ 코드 컨벤션
