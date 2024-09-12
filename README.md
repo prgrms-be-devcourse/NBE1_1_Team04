@@ -131,7 +131,7 @@ Spring Boot를 기반으로 Coffe Bean package를 웹 사이트로 주문하는 
 <br><br>
 # ✅ DDL
 
-주문(Orders)
+## 주문(Orders)
 
 ```sql
 CREATE TABLE `orders` (
@@ -162,7 +162,7 @@ CREATE TABLE users
 );
 ```
 
-# ShedLock
+## ShedLock
 
 ```sql
 CREATE TABLE `shedlock` (
