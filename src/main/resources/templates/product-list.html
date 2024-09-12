@@ -40,6 +40,7 @@
     <td th:text="*{createdAt}"></td>
     <td th:text="*{updatedAt}"></td>
     <td ><a th:href="@{/update-product(productId=*{productId})}" class="btn btn-primary me-md-2" type="button">Update Product</a></td>
+    <td ><a th:href="@{/products/delete(productId=*{productId})}" class="btn btn-primary me-md-2" type="button">Delete Product</a></td>
   </tr>
   </tbody>
 </table>
