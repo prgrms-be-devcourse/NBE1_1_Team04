@@ -57,7 +57,7 @@ public class ReviewService {
     public ResponseEntity<String> createReview(String productId, CustomUserDetail userDetail, ReviewRequest reviewRequest) {
         // 권한 설정 넣어주기
         // userId 값을 받아와서 해당 userId의 주문과 productId의 orderItem이 존재하지 않으면 주문 exception 넣어주기 // 해당 유저의 주문내역에서 주문상품 찾기
-        if (!orderItemRepository.existsByOrder_Email(userDetail.getEmail())) {
+        if (!orderItemRepository.existsByOrder_EmailAndProduct_ProductId(userDetail.getEmail(), UUIDUtil.hexStringToByteArray(productId))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("no order history for the product");
         }
         Product product = productRepository.findById(UUIDUtil.hexStringToByteArray(productId))

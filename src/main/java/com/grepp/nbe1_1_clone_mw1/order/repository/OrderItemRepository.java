@@ -12,5 +12,5 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     List<OrderItem> findByOrder(Order order);
 
-    boolean existsByOrder_Email(String email);
+    boolean existsByOrder_EmailAndProduct_ProductId(String email, byte[] productId);
 }
