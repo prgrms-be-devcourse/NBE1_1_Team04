@@ -1,6 +1,8 @@
 package com.grepp.nbe1_1_clone_mw1.order.controller.api;
 
 
+import com.grepp.nbe1_1_clone_mw1.auth.model.CustomUserDetail;
+import com.grepp.nbe1_1_clone_mw1.global.annotation.LoginUser;
 import com.grepp.nbe1_1_clone_mw1.order.controller.dto.CreateAnonymousOrderRequest;
 import com.grepp.nbe1_1_clone_mw1.order.controller.dto.CreateOrderRequest;
 import com.grepp.nbe1_1_clone_mw1.order.controller.dto.OrderResponse;
@@ -20,9 +22,9 @@ public class OrderRestController {
   }
 
   @PostMapping
-  public OrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request) {
+  public OrderResponse createOrder(@LoginUser CustomUserDetail user, @Valid @RequestBody CreateOrderRequest request) {
     return OrderResponse.from(orderService.createOrder(
-            request.userDetail().getEmail(),
+            user.getEmail(),
             request.orderItems()
     ));
 
