@@ -24,7 +24,7 @@ public class ProductController {
     return "product-list";
   }
 
-  @GetMapping("new-product")
+  @GetMapping("/new-product")
   public String newProductPage() {
     return "new-product";
   }
