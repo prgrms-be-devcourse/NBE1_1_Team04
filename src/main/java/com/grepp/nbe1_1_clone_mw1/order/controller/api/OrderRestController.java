@@ -1,20 +1,13 @@
 package com.grepp.nbe1_1_clone_mw1.order.controller.api;
 
 
+import com.grepp.nbe1_1_clone_mw1.order.controller.dto.CreateAnonymousOrderRequest;
 import com.grepp.nbe1_1_clone_mw1.order.controller.dto.CreateOrderRequest;
 import com.grepp.nbe1_1_clone_mw1.order.controller.dto.OrderResponse;
 import com.grepp.nbe1_1_clone_mw1.order.controller.dto.UpdateOrderRequest;
 import com.grepp.nbe1_1_clone_mw1.order.service.OrderService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/orders")
 @RestController
@@ -29,8 +22,17 @@ public class OrderRestController {
   @PostMapping
   public OrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request) {
     return OrderResponse.from(orderService.createOrder(
-            request.toContent(),
+            request.userDetail().getEmail(),
             request.orderItems()
+    ));
+
+  }
+
+  @PostMapping("/anonymous")
+  public OrderResponse createAnonymousOrder(@Valid @RequestBody CreateAnonymousOrderRequest orderRequest) {
+    return OrderResponse.from(orderService.createAnonymousOrder(
+            orderRequest.toContent(),
+            orderRequest.orderItems()
     ));
   }
 

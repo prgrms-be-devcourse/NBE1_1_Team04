@@ -75,7 +75,7 @@ public class DefaultProductService implements ProductService {
   @Transactional
   @Override
   public String deleteProduct(String productId) {
-    orderItemRepository.deleteByProducts_ProductId(UUIDUtil.hexStringToByteArray(productId));
+    orderItemRepository.deleteByProduct_ProductId(UUIDUtil.hexStringToByteArray(productId));
     productRepository.deleteByProductId(UUIDUtil.hexStringToByteArray(productId));
     return "delete success";
   }

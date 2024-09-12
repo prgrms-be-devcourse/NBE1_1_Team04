@@ -1,23 +1,21 @@
 package com.grepp.nbe1_1_clone_mw1.order.service;
 
-
-import com.grepp.nbe1_1_clone_mw1.order.controller.dto.OrderResponse;
-import com.grepp.nbe1_1_clone_mw1.order.model.OrderItemInfo;
+import com.grepp.nbe1_1_clone_mw1.global.util.UUIDUtil;
 import com.grepp.nbe1_1_clone_mw1.order.model.Order;
 import com.grepp.nbe1_1_clone_mw1.order.model.OrderContent;
 import com.grepp.nbe1_1_clone_mw1.order.model.OrderItem;
-import com.grepp.nbe1_1_clone_mw1.product.model.Product;
-import com.grepp.nbe1_1_clone_mw1.order.repository.OrderItemRepository;
+import com.grepp.nbe1_1_clone_mw1.order.model.OrderItemInfo;
 import com.grepp.nbe1_1_clone_mw1.order.repository.OrderRepository;
+import com.grepp.nbe1_1_clone_mw1.product.model.Product;
 import com.grepp.nbe1_1_clone_mw1.product.repository.ProductRepository;
-import com.grepp.nbe1_1_clone_mw1.global.util.UUIDUtil;
+import com.grepp.nbe1_1_clone_mw1.user.model.User;
+import com.grepp.nbe1_1_clone_mw1.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,17 +24,33 @@ public class DefaultOrderService implements OrderService {
 
   private final OrderRepository orderRepository;
   private final ProductRepository productRepository;
+  private final UserRepository userRepository;
 
   @Transactional
   @Override
-  public Order createOrder(OrderContent orderContent, List<OrderItemInfo> orderItemInfos) {
+  public Order createAnonymousOrder(OrderContent orderContent, List<OrderItemInfo> orderItemInfos) {
+    List<OrderItem> orderItems = toOrderItems(orderItemInfos);
 
-    List<OrderItem> orderItems = orderItemInfos.stream().map(orderItemInfo -> {
+    return orderRepository.save(Order.create(orderContent, orderItems));
+  }
+
+  @Transactional
+  @Override
+  public Order createOrder(String email, List<OrderItemInfo> orderItemInfos) {
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    OrderContent orderContent = OrderContent.create(email, user.getAddress(), user.getPostCode());
+
+    List<OrderItem> orderItems = toOrderItems(orderItemInfos);
+
+    return orderRepository.save(Order.create(orderContent, orderItems));
+  }
+
+  private List<OrderItem> toOrderItems(List<OrderItemInfo> orderItemInfos) {
+    return orderItemInfos.stream().map(orderItemInfo -> {
       Product product = getProductById(orderItemInfo.productId());
       return OrderItem.create(orderItemInfo, product);
     }).toList();
-
-    return orderRepository.save(Order.create(orderContent, orderItems));
   }
 
   @Override

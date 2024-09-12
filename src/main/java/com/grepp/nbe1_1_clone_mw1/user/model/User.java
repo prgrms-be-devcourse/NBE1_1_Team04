@@ -45,10 +45,15 @@ public class User {
                 .email(email)
                 .password(password)
                 .address(address)
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .postCode(postCode)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
+  
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }
+

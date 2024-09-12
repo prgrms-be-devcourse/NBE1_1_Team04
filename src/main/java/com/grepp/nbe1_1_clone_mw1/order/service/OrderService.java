@@ -8,11 +8,14 @@ import com.grepp.nbe1_1_clone_mw1.order.model.OrderContent;
 import java.util.List;
 
 public interface OrderService {
-  Order createOrder(OrderContent orderContent, List<OrderItemInfo> orderItems);
+  Order createOrder(String email, List<OrderItemInfo> orderItems);
+
+  Order createAnonymousOrder(OrderContent orderContent, List<OrderItemInfo> orderItems);
 
   Order getOrder(String orderId);
 
   void updateOrder(String orderId, String email, OrderContent orderContent);
 
   void deleteOrder(String orderId, String email);
+
 }

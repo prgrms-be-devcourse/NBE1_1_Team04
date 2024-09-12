@@ -5,5 +5,7 @@ public record OrderContent(
         String address,
         String postcode
 ) {
-
+    public static OrderContent create(String email, String address, String postcode) {
+        return new OrderContent(email, address, postcode);
+    }
 }
