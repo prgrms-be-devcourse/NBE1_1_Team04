@@ -10,4 +10,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByProducts_ProductId(byte[] productId);
     List<Review> findByUser_UserId(byte[] userId);
+    List<Review> findByUser_Email(String email);
 }
