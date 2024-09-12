@@ -8,9 +8,9 @@ import com.grepp.nbe1_1_clone_mw1.order.model.OrderContent;
 import java.util.List;
 
 public interface OrderService {
-  CreateOrderResponse createAnonymousOrder(String email, String address, String postcode, List<OrderItemInfo> orderItems);
+  Order createOrder(String email, List<OrderItemInfo> orderItems);
 
-  Order createOrder(OrderContent orderContent, List<OrderItemInfo> orderItems);
+  Order createAnonymousOrder(OrderContent orderContent, List<OrderItemInfo> orderItems);
 
   Order getOrder(String orderId);
 
