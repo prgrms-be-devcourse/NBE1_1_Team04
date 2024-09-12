@@ -27,6 +27,11 @@ public class ReviewRestController {
         return reviewService.getReviewsByProduct(productId);
     }
 
+    @GetMapping("/review/{reviewId}")
+    public ResponseEntity<ReviewResponse> getReview(@PathVariable("reviewId") Long reviewId) {
+        return reviewService.getReview(reviewId);
+    }
+
     @PostMapping("/review/{productId}")
     public ResponseEntity<String> addReview(@PathVariable("productId") String productId, @RequestBody ReviewRequest reviewRequest, @LoginUser CustomUserDetail userDetail) {
         return reviewService.createReview(productId, userDetail, reviewRequest);

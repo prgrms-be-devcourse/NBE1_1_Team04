@@ -46,6 +46,11 @@ public class ReviewService {
         return ResponseEntity.ok(responses);
     }
 
+    public ResponseEntity<ReviewResponse> getReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found"));
+        return ResponseEntity.ok(new ReviewResponse(review));
+    }
+
     @Transactional
     public ResponseEntity<String> createReview(String productId, CustomUserDetail userDetail, ReviewRequest reviewRequest) {
         // 권한 설정 넣어주기
