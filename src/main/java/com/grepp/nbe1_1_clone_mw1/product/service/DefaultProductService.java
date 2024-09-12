@@ -41,17 +41,20 @@ public class DefaultProductService implements ProductService {
   private final OrderItemRepository orderItemRepository;
   private final ProductImageRepository productImageRepository;
 
+  @Transactional(readOnly = true)
   @Override
   public List<ProductResponse> getProductsByCategory(Category category) {
 
     return productRepository.findByCategory(category).stream().map(ProductResponse::new).toList();
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<ProductResponse> getAllProducts() {
     return productRepository.findAll().stream().map(ProductResponse::new).toList();
   }
 
+  @Transactional
   @Override
   public Product createProduct(String productName, Category category, long price) {
     var product = Product.create(productName, category, price);
@@ -114,6 +117,7 @@ public class DefaultProductService implements ProductService {
     productImageRepository.saveAll(productImages);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public ResponseEntity<Resource> getProductImage(String productId) {
     Optional<ProductImage> productImage = productImageRepository.findFirstByProducts_ProductId(UUIDUtil.hexStringToByteArray(productId));
