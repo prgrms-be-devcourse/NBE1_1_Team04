@@ -12,3 +12,4 @@ public enum Role {
     private final String role;
     private final String name;
 }
+

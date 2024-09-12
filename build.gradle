@@ -39,6 +39,10 @@ dependencies {
 
     //uuid
     implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
+
+    // shedlock - schedule lock
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:5.10.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.10.0'
 }
 
 tasks.named('test') {

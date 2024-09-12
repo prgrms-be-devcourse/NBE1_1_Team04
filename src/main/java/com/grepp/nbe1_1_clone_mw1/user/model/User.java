@@ -51,8 +51,9 @@ public class User {
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
-
+  
     public void updatePassword(String password) {
         this.password = password;
     }
 }
+

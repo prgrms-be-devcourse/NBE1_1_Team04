@@ -14,7 +14,8 @@
 <body class="container-fluid">
 <h1>Grids & Circles</h1>
 <h2>Production Management</h2>
-<form th:action="@{/products}" method="post" enctype="multipart/form-data">
+<form th:action="@{/products/update}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="productId" th:value="${productId}" />
   <div class="mb-3">
     <label for="productName" class="form-label">Name</label>
     <input type="text" class="form-control" id="productName" name="productName">
