@@ -22,7 +22,7 @@ public class ReviewRestController {
         return reviewService.getReviewsByUser(userDetail);
     }
 
-    @GetMapping("/review/{productId}")
+    @GetMapping("/review/product/{productId}")
     public ResponseEntity<List<ReviewResponse>> getReviewsByProductId(@PathVariable("productId") String productId) {
         return reviewService.getReviewsByProduct(productId);
     }
